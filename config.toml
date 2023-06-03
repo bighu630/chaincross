@@ -1,0 +1,15 @@
+[peer]   # p2p网关的配置
+dest = ""
+port = 12778
+
+[rpc]
+port = 7788
+
+[fabric]  # fabric的配置
+name = "fabric_NFT"
+configPath = "./fabricConfigFiles/fabric-connect.yaml"
+orgname = "org1"
+orgadmin = "Admin"
+orguser = "user1"
+channelid = "mychannel"
+peers =["peer0.org1.example.com","peer0.org2.example.com"]
