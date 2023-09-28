@@ -29,7 +29,7 @@ type P2PServer struct {
 }
 
 var sendmsg = make(chan []byte, 1024)
-var handmsg = make(chan []byte, 1024)
+var handlemsg = make(chan []byte, 1024)
 var stop chan interface{}
 
 // Start 启动服务，并保持运行
@@ -64,7 +64,7 @@ func (p *P2PServer) Start(chain *chainmanger.ChainManager) {
 
 func (p *P2PServer) handler() {
 	for {
-		data := <-handmsg
+		data := <-handlemsg
 		var msg Msg
 		err := json.Unmarshal(data, &msg)
 		if err != nil {
@@ -198,7 +198,7 @@ func readData(rw *bufio.ReadWriter) {
 			return
 		}
 		if len(data) != 1 {
-			handmsg <- data
+			handlemsg <- data
 		}
 	}
 }

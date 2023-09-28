@@ -46,7 +46,7 @@ func (c Chain) InvokeCC() (*channel.Response, error) {
 	return &resp, nil
 }
 
-func (c *Chain) StartHTCL(tx dao.HTCLTx) (*channel.Response, error) {
+func (c *Chain) StartHTCL(tx dao.HTLCTx) (*channel.Response, error) {
 	type info struct {
 		LtokenId string
 		Lto      string

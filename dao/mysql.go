@@ -101,7 +101,7 @@ func AddChainsName(names []string) ([]string, error) {
 	return nil, err
 }
 
-func CreateHTCLTx(tx HTCLTx) (int64, error) {
+func CreateHTLCTx(tx HTLCTx) (int64, error) {
 	chainNames := []string{tx.ChainAName, tx.ChainBName}
 	eixetChain := CheckNameExist(chainNames)
 	if len(eixetChain) != 2 {
@@ -133,19 +133,19 @@ func CreateHTCLTx(tx HTCLTx) (int64, error) {
 	return res.LastInsertId()
 }
 
-func GetHTCLTx(id int64) (HTCLTx, error) {
+func GetHTLCTx(id int64) (HTLCTx, error) {
 	sqlStr := `SELECT * FROM htcl WHERE id=?`
-	var tx HTCLTx
+	var tx HTLCTx
 	var i int64
 	err := DB.QueryRow(sqlStr, id).Scan(&i, &tx.ChainAName, &tx.TradeNFTID, &tx.NFTRecipientAddr, &tx.ChainBName, &tx.CoinNUM, &tx.CoinRecipientAddr, &tx.Hs, &tx.TimeStart, &tx.TimeEnd, &tx.AproveID)
 	if err != nil {
 		log.Printf("无法查找id为%d的htcl交易", id)
-		return HTCLTx{}, err
+		return HTLCTx{}, err
 	}
 	return tx, nil
 }
 
-type HTCLTx struct {
+type HTLCTx struct {
 	ChainAName        string
 	TradeNFTID        string //交易NFTID
 	NFTRecipientAddr  string // NFT接受者地址

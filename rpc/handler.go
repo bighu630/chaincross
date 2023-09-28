@@ -16,7 +16,7 @@ type RpcHandler struct {
 }
 
 func (h *RpcHandler) CreateHTCLTxByPreInfo(PreInfo *PreHTCL, resout *int64) error {
-	Tx := dao.HTCLTx{
+	Tx := dao.HTLCTx{
 		ChainAName:        PreInfo.ChainAName,
 		ChainBName:        PreInfo.CHainBName,
 		TradeNFTID:        PreInfo.TradeNFTID,
@@ -29,19 +29,19 @@ func (h *RpcHandler) CreateHTCLTxByPreInfo(PreInfo *PreHTCL, resout *int64) erro
 		TimeEnd:           time.Now().Unix() + int64(PreInfo.TimeInterval*60*1000),
 	}
 
-	res, err := dao.CreateHTCLTx(Tx)
+	res, err := dao.CreateHTLCTx(Tx)
 	*resout = res
 	return err
 }
 
-func (h *RpcHandler) GetHTCLTxByID(id int64, resout *dao.HTCLTx) error {
-	res, err := dao.GetHTCLTx(id)
+func (h *RpcHandler) GetHTCLTxByID(id int64, resout *dao.HTLCTx) error {
+	res, err := dao.GetHTLCTx(id)
 	*resout = res
 	return err
 }
 
 func (h *RpcHandler) StartHTLC(id int64, resout *string) error {
-	tx, err := dao.GetHTCLTx(id)
+	tx, err := dao.GetHTLCTx(id)
 	if err != nil {
 		log.Println(err)
 		*resout = err.Error()
@@ -73,7 +73,7 @@ func (h *RpcHandler) UnlockHTCL(UA *UnlockArgs, resout *string) error {
 }
 
 func (h *RpcHandler) Test(PreInfo *PreHTCL, resout *string) error {
-	Tx := dao.HTCLTx{
+	Tx := dao.HTLCTx{
 		TradeNFTID:        PreInfo.TradeNFTID,
 		NFTRecipientAddr:  PreInfo.NFTRecipientAddr,
 		CoinNUM:           PreInfo.CoinNUM,
@@ -87,8 +87,8 @@ func (h *RpcHandler) Test(PreInfo *PreHTCL, resout *string) error {
 	return err
 }
 
-func (r *RpcHandler) handlerHTCL(tx dao.HTCLTx) error {
-	if r.chainManger.IsUsableChain(tx.ChainAName) {
+func (r *RpcHandler) handlerHTCL(tx dao.HTLCTx) error {
+	if r.chainManger.IsUseableChain(tx.ChainAName) {
 		chain := r.chainManger.GetChainByName(tx.ChainAName)
 		if chain == nil {
 			return fmt.Errorf("没有找到名为%s的链", tx.ChainAName)
@@ -101,7 +101,7 @@ func (r *RpcHandler) handlerHTCL(tx dao.HTCLTx) error {
 }
 
 func (r *RpcHandler) handlerHTCLUnlock(unlock UnlockHTCL) error {
-	HTLCtx, err := dao.GetHTCLTx(unlock.TransaID)
+	HTLCtx, err := dao.GetHTLCTx(unlock.TransaID)
 	if err != nil {
 		log.Println(err)
 	}

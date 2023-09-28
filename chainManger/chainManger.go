@@ -16,7 +16,7 @@ func NewChainManger() *ChainManager {
 }
 
 // 判断chain是否在chainList中
-func (c ChainManager) IsUsableChain(chainID string) bool {
+func (c ChainManager) IsUseableChain(chainID string) bool {
 	for _, it := range c.ChainList {
 		if chainID == it.name {
 			return true
@@ -26,7 +26,7 @@ func (c ChainManager) IsUsableChain(chainID string) bool {
 }
 
 func (c *ChainManager) GetChainByName(chainID string) *Chain {
-	if c.IsUsableChain(chainID) {
+	if c.IsUseableChain(chainID) {
 		return c.ChainList[chainID]
 	}
 	return nil
